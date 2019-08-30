@@ -8,106 +8,691 @@ using System.Windows.Forms;
 using System.Collections;
 using System.Data;
 using System.Net.Http;
+using NPOI.HSSF.UserModel;
+using NPOI.XSSF;
+using System.IO;
 
+using System.Diagnostics;
 
 namespace IdiomExam
 {
+
     public partial class frmMain:Form
     {
+
+
+        #region Definitions
+        
+        
+
+        public enum IdiomColumn
+        {
+            id,
+            idiom,
+            phonetic,
+            hanyuPhonetic,
+            interpretation,
+            source,
+            sourceIntro,
+            prove,
+            method,
+            synonymous,
+            antonym,
+            identifi,
+            refWords,
+        }
+        
+
+        public Point[] mFirstInterPos= new Point[2];
+        public Point[] mSecInterPos= new Point[2];
+
+        #endregion
+
+        #region Properties
+        
+
+        public ArrayList mCtrlSize;
+
+        public DataSet mDs;
+        public frmData mCtrlData;
+
+        public Size mMainExpandSize;
+        public Size mMainCollapseSize;
+        public bool mExpandStt;
+
+        public bool mAutoSaveImg;
+        public string mAutoSaveImgPath;
+        // --  variable of configuration 
+        public enum Config
+        {
+            AutochangeFlg,
+            TopMostFlg,
+            AutoSaveImgFlg,
+            TransparentValue,
+            SaveFilePath,
+            AutoChangeTimeValue,
+            CurrDataRow
+        }
+
+        #endregion
+
+        #region Methods - Initialization
+        
         public frmMain()
         {
             
             InitializeComponent();
-        }
-    
-        static string[] PhonFonts = new string[] 
-    {
-      "王漢宗中楷體注音", "王漢宗中楷體破音一",
-      "王漢宗中楷體破音二", "王漢宗中楷體破音三"
-    };
-
-     public void ProcessRequest ( string width,string height,string fontsize,string bgColor,
-                string frontColor,string text,string strAf,bool SaveBmp=true) 
-        {
-            //忽略參數檢查
+            mMainExpandSize= new Size(1166,298);
+            mMainCollapseSize= new Size(767,298);
             
-            int w = int.Parse(width);
-            int h = int.Parse(height);
-            float fs = float.Parse(fontsize);
-            Color bc = ColorTranslator.FromHtml("0x" +bgColor );
-            Color fc = ColorTranslator.FromHtml("0x" + frontColor);
-            string txt = text;
-            //允許不同的字指定破音字，如四個字第三個字要用破音字一 af=0010
-            string af="";
-            if(strAf=="0")
-            {
-                for(int i=0;i<=txt.Length-1;i++)
-                {
-                    af+=strAf;
-                }
-            }else
-            {
-                af=strAf;
-            }
-            //string af = strAf ?? text.Length.ToString();
-            //建立畫布
-            Bitmap bmp = new Bitmap(w, h);
-            //取得字數，測量並計算寬度，決定置中用的位移
-            Graphics g = Graphics.FromImage(bmp);
-            //塗上背景色
-            Brush p = new SolidBrush(bc);
-            g.FillRectangle(p, 0, 0, bmp.Width, bmp.Height);
-            //使用"王漢宗中楷體"
-            Font fnt = new Font(PhonFonts[0], fs);
-            var sz = g.MeasureString(txt, fnt);
-            //設定文字反鋸齒
-            g.TextRenderingHint = TextRenderingHint.AntiAlias;
-            //取得每個字的寬度
-            float widthPerChar = sz.Width / txt.Length;   
-            //計算置中用的位移     
-            float offsetX = (bmp.Width - sz.Width) / 2;
-            float offsetY = (bmp.Height - sz.Height) / 2;
-            //考量破音字要換字型，每個字元可用不同字型
-            //用迴圈一次畫一個字元
-            for (int i = 0; i < txt.Length; i++)
-            {
-                //查第i個字元的破音字指定
-                int fntIdx = (byte)af[i] - 0x30;
-                //以前景色寫上文件
-                g.DrawString(
-                    txt[i].ToString(), 
-                    new Font(PhonFonts[fntIdx], fs),
-                    new SolidBrush(fc),
-                    new PointF(
-                        offsetX + widthPerChar * i, 
-                        offsetY));
-            }
-            if (SaveBmp)
-            {
-                //將結果存為檔案
-                bmp.Save(Application.StartupPath+"\\"+text+".bmp");
-                this.pictureBox1.Image= bmp;
-            }
-            else
-            {
-                ////將結果以PNG格式傳回
-                //context.Response.ContentType = "image/png";
-                //bmp.Save(context.Response.OutputStream, ImageFormat.Png);
-            }
-        }
+            mCtrlData= new frmData(this);
+            GetConfig();
 
-        public bool IsReusable {
-            get {
-                return false;
-            }
+            mDs= mCtrlData.mDs;
+            ChangeFormSize();
+            Run();
+            
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            ProcessRequest("420","70","36","ffffff","000000","揠苗助長","0000",true);
-        }
-    }
-
     
 
+        #endregion
+
+        #region Methods - Other support function
+
+        public Int32 GetConfig()
+        {
+            Int32 iRet=0;
+            try
+            {
+                ArrayList arylstConfig= new ArrayList();
+                foreach(string strTmp in Enum.GetNames(typeof(Config)))
+                {
+                    arylstConfig.Add("");
+                }
+
+                
+                arylstConfig[(int)Config.AutochangeFlg]= 
+                    Properties.Settings.Default.autoChange.ToString();
+                
+                arylstConfig[(int)Config.AutoChangeTimeValue]= 
+                    Properties.Settings.Default.autoChangeTime.ToString();
+                
+                arylstConfig[(int)Config.AutoSaveImgFlg]= 
+                    Properties.Settings.Default.autoSaveImg.ToString();
+                
+                arylstConfig[(int)Config.SaveFilePath]= 
+                    Properties.Settings.Default.saveImgPath.ToString();
+                
+                arylstConfig[(int)Config.TopMostFlg]= 
+                    Properties.Settings.Default.topMost.ToString();
+                
+                arylstConfig[(int)Config.TransparentValue]= 
+                    Properties.Settings.Default.transparent.ToString();
+
+                arylstConfig[(int)Config.CurrDataRow]=
+                    Properties.Settings.Default.currentDataRow.ToString();
+               
+                chkAutoChange.Checked=
+                    Convert.ToBoolean(
+                    Convert.ToInt32(
+                        arylstConfig[(int)Config.AutochangeFlg].ToString()));
+
+                chkEnableTop.Checked= 
+                    Convert.ToBoolean(
+                    Convert.ToInt32(
+                        arylstConfig[(int)Config.TopMostFlg].ToString()));
+
+                chkSaveImg.Checked=
+                    Convert.ToBoolean(
+                    Convert.ToInt32(
+                        arylstConfig[(int)Config.AutoSaveImgFlg].ToString()));
+                
+                mAutoSaveImg=chkSaveImg.Checked;
+
+                txtCountDown.Text= arylstConfig[(int)Config.AutoChangeTimeValue].ToString();
+
+                txtSaveFilePath.Text= arylstConfig[(int)Config.SaveFilePath].ToString();
+                mAutoSaveImgPath= txtSaveFilePath.Text.TrimEnd('\\')+"\\";
+
+                txtTransparent.Text= arylstConfig[(int)Config.TransparentValue].ToString();
+
+                Int32 iCurDataRow= Convert.ToInt32(arylstConfig[(int)Config.CurrDataRow]);
+                mCtrlData.SetCurrDataRow(iCurDataRow);
+
+                tmrAutoChange.Enabled=false;
+                tmrAutoChange.Interval=Convert.ToInt32( arylstConfig[(int)Config.AutoChangeTimeValue])*1000;
+                tmrAutoChange.Enabled= chkAutoChange.Enabled;
+
+                
+
+            }
+            catch (Exception ex)
+            {
+
+                iRet=-1;
+                Debug.WriteLine(ex.Message);
+            }
+
+            return iRet;
+        }
+
+        public Int32 SaveConfig()
+        {
+            Int32 iRet=0;
+            try
+            {
+                // -- Get config parameters from each control and save to settings.
+                ArrayList arylstConfig= new ArrayList();
+                foreach(string strTmp in Enum.GetNames(typeof(Config)))
+                {
+                    arylstConfig.Add("");
+                }
+
+                arylstConfig[(int)Config.AutochangeFlg]=
+                    Convert.ToInt32(chkAutoChange.CheckState).ToString();
+                
+                arylstConfig[(int)Config.AutoChangeTimeValue]=txtCountDown.Text;
+
+                arylstConfig[(int)Config.AutoSaveImgFlg]=
+                    Convert.ToInt32(chkSaveImg.CheckState).ToString();
+                
+                arylstConfig[(int)Config.SaveFilePath]= txtSaveFilePath.Text;
+
+                arylstConfig[(int)Config.TopMostFlg]=
+                    Convert.ToInt32(chkEnableTop.CheckState).ToString();
+                
+                arylstConfig[(int)Config.TransparentValue]=
+                    Convert.ToDouble(txtTransparent.Text).ToString();
+                
+                arylstConfig[(int)Config.CurrDataRow]= mCtrlData.GetCurrDataRow().ToString();
+                
+                Properties.Settings.Default.autoChange= arylstConfig[(int)Config.AutochangeFlg].ToString();
+                Properties.Settings.Default.autoChangeTime= arylstConfig[(int)Config.AutoChangeTimeValue].ToString();
+                Properties.Settings.Default.autoSaveImg= arylstConfig[(int)Config.AutoSaveImgFlg].ToString();
+                Properties.Settings.Default.saveImgPath= arylstConfig[(int)Config.SaveFilePath].ToString();
+                Properties.Settings.Default.topMost= arylstConfig[(int)Config.TopMostFlg].ToString();
+                Properties.Settings.Default.transparent= arylstConfig[(int)Config.TransparentValue].ToString();
+                Properties.Settings.Default.currentDataRow= arylstConfig[(int)Config.CurrDataRow].ToString();
+
+                Properties.Settings.Default.Save();
+
+            }
+            catch (Exception ex)
+            {
+                iRet=-1;
+                Debug.WriteLine(ex.Message);
+            }
+
+            return iRet;
+        }
+
+        public Int32 GetOneIdiom(string width,string height,string fontsize,string bgColor,
+                string frontColor,string text,ArrayList aryPhoetics,bool SaveBmp=false)
+        {
+            Int32 stt=0;
+            try
+            {
+                
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                stt=-1;
+            }
+        
+            return stt;
+        }
+
+        private void GetSelIdiom(int selRowIdx ,ref ArrayList idiomList)
+        {
+            try
+            {
+                ArrayList aryTmp= new ArrayList();
+
+                string strIdiom="";
+                //int iSel= dgvData.SelectedRows[selRowIdx].Index;
+                
+                for (int i=0;i<=Enum.GetNames(typeof(IdiomColumn)).Length-1;i++)
+                {
+                    aryTmp.Add(mDs.Tables[0].Rows[selRowIdx][i].ToString());
+                }
+                strIdiom= mDs.Tables[0].Rows[selRowIdx][2].ToString();
+                
+                idiomList= aryTmp;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+        
+        public void ChangeFormSize()
+        {
+            try
+            {
+                
+                if(mExpandStt)
+                {
+                    
+                    this.Size= mMainExpandSize;
+                }else
+                {
+                    this.Size= mMainCollapseSize;
+                }
+
+                mExpandStt=!mExpandStt;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        
+        }
+        
+        public Int32 GetIdiom(Int32 iDataRow)
+        {
+            Int32 iRet=0;
+            try
+            {
+                int iSelRow=iDataRow;
+                ArrayList aryIdiomLst= new ArrayList();
+                GetSelIdiom(iSelRow,ref aryIdiomLst);
+                string strIdiom=aryIdiomLst[(int)IdiomColumn.idiom].ToString();
+
+                string strPhonetic=aryIdiomLst[(int)IdiomColumn.phonetic].ToString();
+
+                ArrayList aryBmp= new ArrayList();
+            
+            mCtrlData.GenerateIdiomPic("850","50","28","E4F4E4","000000",strIdiom,strPhonetic,ref aryBmp,mAutoSaveImg,mAutoSaveImgPath);
+            PictureBox[] picS= new PictureBox[2];
+            picS[0]= picFirstIdiom;
+            picS[1]= picSecIdiom;;
+
+            for(int i=0;i<=aryBmp.Count-1;i++)
+            {
+                picS[i].Image=((Bitmap)aryBmp[i]);
+            }
+
+                //mCtrlData.GenerateIdiomPic("450","50","24","E4F4E4","000000",strIdiom,aryTmp,ref pic,true);
+                //mCtrlData.ProcessRequest("450","50","24","E4F4E4","000000",strIdiom,strTmp,ref pic,true);
+                txtInterpretation.Text= aryIdiomLst[(int)IdiomColumn.interpretation].ToString();
+            }
+            catch (Exception ex)
+            {
+                iRet=-1;
+                MessageBox.Show(ex.Message);
+            }
+            return  iRet;
+        }
+
+        public Int32 GetnextIdiom()
+        {
+            Int32 iRet=0;
+            try
+            {
+                
+                picSecIdiom.Image=null;
+                // set the current record to first record index if current row is the last recrod.
+                if(mCtrlData.mCurrentSelectRow>=mDs.Tables[0].Rows.Count)
+                {
+                    mCtrlData.mCurrentSelectRow=0;
+                }else
+                {
+                    mCtrlData.mCurrentSelectRow++;
+                }
+
+                int iDataRow=mCtrlData.mCurrentSelectRow;
+                
+                GetIdiom(iDataRow);
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+            return iRet;
+        }
+        public Int32 GetPrevidiom()
+        {
+            Int32 iRet=0;
+            try
+            {
+                picSecIdiom.Image=null;
+
+                // set current row number to last record index if current row is the first record.
+                if(mCtrlData.mCurrentSelectRow<=0)
+                {
+                    mCtrlData.mCurrentSelectRow=mDs.Tables[0].Rows.Count-1;
+                }else
+                {
+                    mCtrlData.mCurrentSelectRow--;
+                }
+
+                int iDataRow=mCtrlData.mCurrentSelectRow;
+                
+                GetIdiom(iDataRow);
+            }
+            catch (Exception ex)
+            {
+                iRet=-1;
+                MessageBox.Show(ex.Message);
+            }
+            return  iRet;
+        }
+
+
+        public void Run()
+        {
+            try
+            {
+                mCtrlData.mCurrentSelectRow++;
+                int iDataRow=mCtrlData.mCurrentSelectRow;
+                
+                GetIdiom(iDataRow);
+                
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
+        private void btnPrev_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                GetPrevidiom();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                GetnextIdiom();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        #endregion
+
+        #region Events - Form
+        private void frmMain_SizeChanged(object sender, EventArgs e)
+        {
+            Debug.WriteLine(this.Height.ToString()+":"+this.Width.ToString());
+            //Debug.WriteLine(dgvData.Height.ToString()+":"+dgvData.Width.ToString());
+            
+
+            //dgvData.Width = tabData.Width - 44;
+            //dgvData.Height = tabData.Height - 100;
+            
+            mFirstInterPos[0]= new Point(19,74);
+            mFirstInterPos[1]= new Point(79,60);
+
+            mSecInterPos[0]= new Point(19,170);
+            mSecInterPos[1]= new Point(500,92);
+        }
+
+        #endregion
+
+        #region Events - Button
+        private void buttonX1_Click(object sender, EventArgs e)
+        {
+            picFirstIdiom.Height=picFirstIdiom.Height-5;
+        }
+       
+        private void btnRun_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                
+                Run();
+            }
+            catch (Exception  ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+                
+        }
+
+        
+        private void btnExpCol_Click(object sender, EventArgs e)
+        {
+            ChangeFormSize();
+        }
+        #endregion
+
+        #region Events - ComboBox
+
+        #endregion
+
+        #region Events - TextBox
+
+        
+        private void txtCountDown_TextChanged(object sender, EventArgs e)
+        {
+            int iRet=0;
+            try
+            {
+                int iTime=0;
+                try
+                {
+                    iTime=Convert.ToInt32(txtCountDown.Text);
+                }
+                catch (Exception ex)
+                {
+                    return;
+                }
+                
+                if(iTime>= sliderAutoChange.Minimum)
+                {
+                
+                    sliderAutoChange.Value=iTime;
+                    tmrAutoChange.Enabled=false;
+                    tmrAutoChange.Interval= iTime*1000;
+                    tmrAutoChange.Enabled=chkAutoChange.Checked;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
+        private void txtCountDown_Validated(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void txtTransparent_Validated(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtTransparent_TextChanged(object sender, EventArgs e)
+        {
+            Int32 iTmp=Convert.ToInt32(txtTransparent.Text);
+            if(iTmp>= sldTransparent.Minimum && iTmp<= sldTransparent.Maximum)
+            {
+                sldTransparent.Value= Convert.ToInt32(txtTransparent.Text);
+                this.Opacity= Convert.ToDouble(txtTransparent.Text)/100;
+            }
+                
+        }
+
+        #endregion
+
+        #region Events - CheckBox
+
+        private void chkAutoChange_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                tmrAutoChange.Enabled= chkAutoChange.Checked;
+                
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
+        private void chkEnableTop_CheckedChanged(object sender, EventArgs e)
+        {
+            this.TopMost= chkEnableTop.Checked;
+        }
+
+
+        #endregion
+
+        #region Events - RadioButton
+               
+        #endregion
+
+        #region Events - Timer
+        private void tmrAutoChange_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+               
+                GetnextIdiom();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
+        #endregion
+        
+        #region Events - Slider
+
+        private void sldTransparent_ValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                
+                txtTransparent.Text= sldTransparent.Value.ToString();
+               
+                this.Opacity= Convert.ToDouble(sldTransparent.Value)/100;
+                
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
+        private void sliderAutoChange_ValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                txtCountDown.Text= sliderAutoChange.Value.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
+
+        #endregion
+
+        #region Events - DatagGidView
+
+        #endregion
+
+        #region Events - GroupBox
+
+
+
+        #endregion
+
+        #region Events - ToolStrip
+
+
+
+        #endregion
+
+        #region Events - MenuStrip
+
+
+
+        #endregion
+
+        private void btnSaveFilePath_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FolderBrowserDialog fd= new FolderBrowserDialog();
+                fd.ShowDialog();
+                txtSaveFilePath.Text= fd.SelectedPath;
+                mAutoSaveImgPath=txtSaveFilePath.Text.TrimEnd('\\')+"\\";
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void btnSaveConfig_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int iRet=0;
+                iRet=SaveConfig();
+                if(iRet==0)
+                {
+                    MessageBox.Show("設定儲存成功");
+                }else
+                {
+                    MessageBox.Show("設定儲存失敗");
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Int32 iRet=0;
+            try
+            {
+                SaveConfig();
+            }
+            catch (Exception ex)
+            {
+                iRet=-1;
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void chkSaveImg_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                mAutoSaveImg=chkSaveImg.Checked;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        
+    }
 }
