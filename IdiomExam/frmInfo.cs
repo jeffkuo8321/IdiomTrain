@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Collections;
+
 namespace IdiomExam
 {
     public partial class frmInfo : Form
@@ -21,7 +23,8 @@ namespace IdiomExam
         #endregion
 
         #region Properties
-
+        
+        frmMain rSystem;
 
 
         #endregion
@@ -34,17 +37,40 @@ namespace IdiomExam
 
         #region Methods - Other support function
 
+        public Int32 SetInfo(ArrayList info)
+        {
+            int iRet=0;
+            try
+            {
+                txtHanyuPhonetic.Text= info[(int)frmMain.IdiomColumn.hanyuPhonetic].ToString();
+                txtSynonymous.Text= info[(int)frmMain.IdiomColumn.synonymous].ToString();
+                txtAntonym.Text= info[(int)frmMain.IdiomColumn.antonym].ToString();
+                txtRefwords.Text= info[(int)frmMain.IdiomColumn.refWords].ToString();
+                txtOtherInfo.Text= "典源:"+ info[(int)frmMain.IdiomColumn.source].ToString()+"\r\n\r\n"+
+                    "典故說明:"+info[(int)frmMain.IdiomColumn.sourceIntro].ToString()+"\r\n\r\n"+
+                    "書證:"+info[(int)frmMain.IdiomColumn.prove].ToString()+"\r\n\r\n"+
+                    "用法說明"+info[(int)frmMain.IdiomColumn.method].ToString();
+                this.Select();
+            }
+            catch (Exception ex)
+            {
+                iRet=-1;
+                Debug.WriteLine(ex.Message);
+            }
+            return iRet;
+        }
 
 
         #endregion
 
         #region Events - Form
-        public frmInfo()
+        public frmInfo(frmMain sys )
         {
             
             try
             {
                 InitializeComponent();
+                rSystem= sys;
             }
             catch (Exception ex)
             {
@@ -53,6 +79,29 @@ namespace IdiomExam
             }
         }
 
+         private void frmInfo_Move(object sender, EventArgs e)
+        {
+            try
+            {
+                //if((this.Location.X - rSystem.Location.X <=10) && 
+                //    (this.Location.Y-(rSystem.Location.Y+rSystem.Height)<=10))
+                //{
+                //    rSystem.SetDesktopLocation(this.Location.X,this.Location.Y- rSystem.Height+7);
+                //} 
+                
+                //if(((this.Location.X - (rSystem.Location.X + rSystem.Width)) <=10) && 
+                //    (this.Location.Y-rSystem.Location.Y<=10))
+                //{
+                //    rSystem.SetDesktopLocation(this.Location.X-rSystem.Width+11,this.Location.Y);
+                //}
+
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine(ex.Message);
+            }
+        }
 
         #endregion
 
@@ -116,6 +165,6 @@ namespace IdiomExam
 
         #endregion
 
-
+       
     }
 }

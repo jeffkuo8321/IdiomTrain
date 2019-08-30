@@ -39,7 +39,7 @@ namespace IdiomExam
             synonymous,
             antonym,
             identifi,
-            refWords,
+            refWords
         }
         
 
@@ -55,6 +55,7 @@ namespace IdiomExam
 
         public DataSet mDs;
         public frmData mCtrlData;
+        public frmInfo mCtrlInfo;
 
         public Size mMainExpandSize;
         public Size mMainCollapseSize;
@@ -74,6 +75,7 @@ namespace IdiomExam
             CurrDataRow
         }
 
+        public ArrayList mIdiomData= new ArrayList();
         #endregion
 
         #region Methods - Initialization
@@ -86,11 +88,12 @@ namespace IdiomExam
             mMainCollapseSize= new Size(767,298);
             
             mCtrlData= new frmData(this);
+            mCtrlInfo= new frmInfo(this);
             GetConfig();
 
             mDs= mCtrlData.mDs;
             ChangeFormSize();
-            Run();
+            GetnextIdiom();
             
         }
     
@@ -150,6 +153,10 @@ namespace IdiomExam
                 mAutoSaveImg=chkSaveImg.Checked;
 
                 txtCountDown.Text= arylstConfig[(int)Config.AutoChangeTimeValue].ToString();
+
+                sldAutoChange.Value= Convert.ToInt32(txtCountDown.Text);
+                
+                sldTransparent.Value=Convert.ToInt32( txtTransparent.Text);
 
                 txtSaveFilePath.Text= arylstConfig[(int)Config.SaveFilePath].ToString();
                 mAutoSaveImgPath= txtSaveFilePath.Text.TrimEnd('\\')+"\\";
@@ -297,6 +304,8 @@ namespace IdiomExam
                 int iSelRow=iDataRow;
                 ArrayList aryIdiomLst= new ArrayList();
                 GetSelIdiom(iSelRow,ref aryIdiomLst);
+                mIdiomData=aryIdiomLst;
+                mCtrlInfo.SetInfo(mIdiomData);
                 string strIdiom=aryIdiomLst[(int)IdiomColumn.idiom].ToString();
 
                 string strPhonetic=aryIdiomLst[(int)IdiomColumn.phonetic].ToString();
@@ -467,6 +476,67 @@ namespace IdiomExam
         {
             ChangeFormSize();
         }
+
+        private void btnInfo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                
+                 if (mCtrlInfo.IsDisposed)
+                {
+                    mCtrlInfo = new frmInfo( this);
+                }
+
+                mCtrlInfo.SetInfo(mIdiomData);
+
+                mCtrlInfo.Visible=!mCtrlInfo.Visible;
+                //mCtrlInfo.Show();
+                mCtrlInfo.SetBounds(this.Location.X,this.Location.Y+ this.Height-5,mCtrlInfo.Width,mCtrlInfo.Height);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+        
+        private void btnSaveFilePath_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FolderBrowserDialog fd= new FolderBrowserDialog();
+                fd.ShowDialog();
+                txtSaveFilePath.Text= fd.SelectedPath;
+                mAutoSaveImgPath=txtSaveFilePath.Text.TrimEnd('\\')+"\\";
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void btnSaveConfig_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int iRet=0;
+                iRet=SaveConfig();
+                if(iRet==0)
+                {
+                    MessageBox.Show("設定儲存成功");
+                }else
+                {
+                    MessageBox.Show("設定儲存失敗");
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         #endregion
 
         #region Events - ComboBox
@@ -491,10 +561,10 @@ namespace IdiomExam
                     return;
                 }
                 
-                if(iTime>= sliderAutoChange.Minimum)
+                if(iTime>= sldAutoChange.Minimum)
                 {
                 
-                    sliderAutoChange.Value=iTime;
+                    sldAutoChange.Value=iTime;
                     tmrAutoChange.Enabled=false;
                     tmrAutoChange.Interval= iTime*1000;
                     tmrAutoChange.Enabled=chkAutoChange.Checked;
@@ -549,7 +619,17 @@ namespace IdiomExam
         {
             this.TopMost= chkEnableTop.Checked;
         }
-
+        private void chkSaveImg_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                mAutoSaveImg=chkSaveImg.Checked;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
         #endregion
 
@@ -595,7 +675,7 @@ namespace IdiomExam
         {
             try
             {
-                txtCountDown.Text= sliderAutoChange.Value.ToString();
+                txtCountDown.Text= sldAutoChange.Value.ToString();
             }
             catch (Exception ex)
             {
@@ -629,43 +709,6 @@ namespace IdiomExam
 
         #endregion
 
-        private void btnSaveFilePath_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                FolderBrowserDialog fd= new FolderBrowserDialog();
-                fd.ShowDialog();
-                txtSaveFilePath.Text= fd.SelectedPath;
-                mAutoSaveImgPath=txtSaveFilePath.Text.TrimEnd('\\')+"\\";
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void btnSaveConfig_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                int iRet=0;
-                iRet=SaveConfig();
-                if(iRet==0)
-                {
-                    MessageBox.Show("設定儲存成功");
-                }else
-                {
-                    MessageBox.Show("設定儲存失敗");
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                MessageBox.Show(ex.Message);
-            }
-        }
 
         private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -681,18 +724,26 @@ namespace IdiomExam
             }
         }
 
-        private void chkSaveImg_CheckedChanged(object sender, EventArgs e)
+        private void frmMain_Move(object sender, EventArgs e)
         {
             try
             {
-                mAutoSaveImg=chkSaveImg.Checked;
+                //if((this.Location.X - mCtrlInfo.Location.X  <=10) && 
+                //    ( mCtrlInfo.Location.Y-(this.Location.Y+this.Height) <=10))
+                //{
+                    mCtrlInfo.SetDesktopLocation(this.Location.X,this.Location.Y+ this.Height-5);
+                //}
+
+                //if(((mCtrlInfo.Location.X + mCtrlInfo.Width)-this.Location.X <=10) && 
+                //    (this.Location.Y-mCtrlInfo.Location.Y<=10))
+                //{
+                //    mCtrlInfo.SetDesktopLocation(this.Location.Y+mCtrlInfo.Width+11,this.Location.Y);
+                //}
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Debug.WriteLine(ex.Message);
             }
         }
-
-        
     }
 }

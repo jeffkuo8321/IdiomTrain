@@ -39,7 +39,7 @@
             this.txtTransparent = new System.Windows.Forms.TextBox();
             this.txtCountDown = new System.Windows.Forms.TextBox();
             this.labelX4 = new DevComponents.DotNetBar.LabelX();
-            this.sliderAutoChange = new DevComponents.DotNetBar.Controls.Slider();
+            this.sldAutoChange = new DevComponents.DotNetBar.Controls.Slider();
             this.sldTransparent = new DevComponents.DotNetBar.Controls.Slider();
             this.chkAutoChange = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.chkSaveImg = new DevComponents.DotNetBar.Controls.CheckBoxX();
@@ -117,7 +117,7 @@
             this.gpSetting.Controls.Add(this.txtTransparent);
             this.gpSetting.Controls.Add(this.txtCountDown);
             this.gpSetting.Controls.Add(this.labelX4);
-            this.gpSetting.Controls.Add(this.sliderAutoChange);
+            this.gpSetting.Controls.Add(this.sldAutoChange);
             this.gpSetting.Controls.Add(this.sldTransparent);
             this.gpSetting.Controls.Add(this.chkAutoChange);
             this.gpSetting.Controls.Add(this.chkSaveImg);
@@ -224,24 +224,24 @@
             this.labelX4.Text = "秒";
             this.labelX4.TextAlignment = System.Drawing.StringAlignment.Center;
             // 
-            // sliderAutoChange
+            // sldAutoChange
             // 
             // 
             // 
             // 
-            this.sliderAutoChange.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.sliderAutoChange.LabelWidth = 45;
-            this.sliderAutoChange.Location = new System.Drawing.Point(125, 0);
-            this.sliderAutoChange.Margin = new System.Windows.Forms.Padding(4);
-            this.sliderAutoChange.Maximum = 1800;
-            this.sliderAutoChange.Minimum = 5;
-            this.sliderAutoChange.Name = "sliderAutoChange";
-            this.sliderAutoChange.Size = new System.Drawing.Size(167, 31);
-            this.sliderAutoChange.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.sliderAutoChange.TabIndex = 9;
-            this.sliderAutoChange.Text = "時間:";
-            this.sliderAutoChange.Value = 60;
-            this.sliderAutoChange.ValueChanged += new System.EventHandler(this.sliderAutoChange_ValueChanged);
+            this.sldAutoChange.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.sldAutoChange.LabelWidth = 45;
+            this.sldAutoChange.Location = new System.Drawing.Point(125, 0);
+            this.sldAutoChange.Margin = new System.Windows.Forms.Padding(4);
+            this.sldAutoChange.Maximum = 1800;
+            this.sldAutoChange.Minimum = 5;
+            this.sldAutoChange.Name = "sldAutoChange";
+            this.sldAutoChange.Size = new System.Drawing.Size(167, 31);
+            this.sldAutoChange.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.sldAutoChange.TabIndex = 9;
+            this.sldAutoChange.Text = "時間:";
+            this.sldAutoChange.Value = 60;
+            this.sldAutoChange.ValueChanged += new System.EventHandler(this.sliderAutoChange_ValueChanged);
             // 
             // sldTransparent
             // 
@@ -353,6 +353,7 @@
             this.btnInfo.TabIndex = 10;
             this.btnInfo.Text = "其\r\n它\r\n資\r\n訊";
             this.btnInfo.TextColor = System.Drawing.Color.Black;
+            this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
             // 
             // btnPrev
             // 
@@ -445,12 +446,14 @@
             this.Controls.Add(this.labelX1);
             this.Controls.Add(this.picFirstIdiom);
             this.Font = new System.Drawing.Font("新細明體", 12F);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmMain";
             this.Text = "成語學習";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMain_FormClosed);
             this.SizeChanged += new System.EventHandler(this.frmMain_SizeChanged);
+            this.Move += new System.EventHandler(this.frmMain_Move);
             this.gpSetting.ResumeLayout(false);
             this.gpSetting.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
@@ -472,7 +475,7 @@
         private DevComponents.DotNetBar.Controls.TextBoxX txtInterpretation;
         private DevComponents.DotNetBar.LabelX labelX1;
         private DevComponents.DotNetBar.LabelX labelX2;
-        private DevComponents.DotNetBar.Controls.Slider sliderAutoChange;
+        private DevComponents.DotNetBar.Controls.Slider sldAutoChange;
         private DevComponents.DotNetBar.Controls.CheckBoxX chkAutoChange;
         private DevComponents.DotNetBar.LabelX labelX4;
         private System.Windows.Forms.Timer tmrAutoChange;

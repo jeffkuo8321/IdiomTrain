@@ -145,7 +145,7 @@
             this.txtRefwords.Name = "txtRefwords";
             this.txtRefwords.PreventEnterBeep = true;
             this.txtRefwords.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtRefwords.Size = new System.Drawing.Size(606, 93);
+            this.txtRefwords.Size = new System.Drawing.Size(606, 43);
             this.txtRefwords.TabIndex = 0;
             // 
             // labelX4
@@ -170,7 +170,7 @@
             // 
             this.txtOtherInfo.Border.Class = "TextBoxBorder";
             this.txtOtherInfo.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.txtOtherInfo.Location = new System.Drawing.Point(102, 273);
+            this.txtOtherInfo.Location = new System.Drawing.Point(102, 223);
             this.txtOtherInfo.Margin = new System.Windows.Forms.Padding(4);
             this.txtOtherInfo.Multiline = true;
             this.txtOtherInfo.Name = "txtOtherInfo";
@@ -185,7 +185,7 @@
             // 
             // 
             this.labelX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX5.Location = new System.Drawing.Point(13, 273);
+            this.labelX5.Location = new System.Drawing.Point(13, 223);
             this.labelX5.Margin = new System.Windows.Forms.Padding(4);
             this.labelX5.Name = "labelX5";
             this.labelX5.Size = new System.Drawing.Size(81, 31);
@@ -197,7 +197,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(751, 712);
+            this.ClientSize = new System.Drawing.Size(747, 660);
             this.Controls.Add(this.labelX5);
             this.Controls.Add(this.labelX4);
             this.Controls.Add(this.labelX3);
@@ -209,10 +209,12 @@
             this.Controls.Add(this.txtSynonymous);
             this.Controls.Add(this.txtHanyuPhonetic);
             this.Font = new System.Drawing.Font("新細明體", 12F);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmInfo";
             this.Text = "Information";
+            this.Move += new System.EventHandler(this.frmInfo_Move);
             this.ResumeLayout(false);
 
         }
