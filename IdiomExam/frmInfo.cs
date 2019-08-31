@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Collections;
+using System.Reflection;
 
 namespace IdiomExam
 {
@@ -50,12 +51,12 @@ namespace IdiomExam
                     "典故說明:"+info[(int)frmMain.IdiomColumn.sourceIntro].ToString()+"\r\n\r\n"+
                     "書證:"+info[(int)frmMain.IdiomColumn.prove].ToString()+"\r\n\r\n"+
                     "用法說明"+info[(int)frmMain.IdiomColumn.method].ToString();
-                this.Select();
+                txtOtherInfo.Select(0,0);
             }
             catch (Exception ex)
             {
                 iRet=-1;
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
             return iRet;
         }
@@ -75,7 +76,7 @@ namespace IdiomExam
             catch (Exception ex)
             {
 
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         }
 
@@ -99,7 +100,7 @@ namespace IdiomExam
             catch (Exception ex)
             {
 
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         }
 

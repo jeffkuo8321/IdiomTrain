@@ -13,7 +13,7 @@ using NPOI.HSSF.UserModel;
 using NPOI.XSSF;
 using System.Collections;
 using System.Drawing.Text;
-
+using System.Reflection;
 namespace IdiomExam
 {
     public partial class frmData : Form
@@ -53,7 +53,7 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         
         
@@ -79,7 +79,7 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
              
         }
@@ -95,7 +95,7 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
             return iCurRow;
         }
@@ -108,7 +108,7 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         
         }
@@ -116,7 +116,7 @@ namespace IdiomExam
 
         public Int32 GetRawData(string fn,ref DataSet dsDest)
         {
-            Int32 retCode=0;
+            Int32 iRet=0;
             try
             {
                 string strFn=fn;
@@ -127,7 +127,8 @@ namespace IdiomExam
                 {
                     blFileExist=false;
                     MessageBox.Show("檔案["+strFn +"]不存在");
-                
+                    iRet=-1;
+                    return iRet;
                 }
 
                 if(blFileExist)
@@ -187,10 +188,11 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-                retCode=-1;
+                iRet=-1;
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
 
-            return retCode;
+            return iRet;
         }
 
         
@@ -416,7 +418,7 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         
         }
@@ -555,7 +557,7 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         }
 
@@ -595,7 +597,7 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         }
     }

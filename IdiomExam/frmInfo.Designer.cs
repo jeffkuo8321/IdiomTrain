@@ -49,11 +49,13 @@
             // 
             this.txtHanyuPhonetic.Border.Class = "TextBoxBorder";
             this.txtHanyuPhonetic.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtHanyuPhonetic.Font = new System.Drawing.Font("標楷體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtHanyuPhonetic.Location = new System.Drawing.Point(102, 19);
-            this.txtHanyuPhonetic.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtHanyuPhonetic.Margin = new System.Windows.Forms.Padding(4);
             this.txtHanyuPhonetic.Multiline = true;
             this.txtHanyuPhonetic.Name = "txtHanyuPhonetic";
             this.txtHanyuPhonetic.PreventEnterBeep = true;
+            this.txtHanyuPhonetic.ReadOnly = true;
             this.txtHanyuPhonetic.Size = new System.Drawing.Size(606, 43);
             this.txtHanyuPhonetic.TabIndex = 0;
             // 
@@ -63,8 +65,9 @@
             // 
             // 
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.Font = new System.Drawing.Font("標楷體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelX1.Location = new System.Drawing.Point(13, 25);
-            this.labelX1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.labelX1.Margin = new System.Windows.Forms.Padding(4);
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(81, 31);
             this.labelX1.TabIndex = 1;
@@ -79,11 +82,13 @@
             // 
             this.txtSynonymous.Border.Class = "TextBoxBorder";
             this.txtSynonymous.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtSynonymous.Font = new System.Drawing.Font("標楷體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSynonymous.Location = new System.Drawing.Point(102, 70);
             this.txtSynonymous.Margin = new System.Windows.Forms.Padding(4);
             this.txtSynonymous.Multiline = true;
             this.txtSynonymous.Name = "txtSynonymous";
             this.txtSynonymous.PreventEnterBeep = true;
+            this.txtSynonymous.ReadOnly = true;
             this.txtSynonymous.Size = new System.Drawing.Size(606, 43);
             this.txtSynonymous.TabIndex = 0;
             // 
@@ -93,6 +98,7 @@
             // 
             // 
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX2.Font = new System.Drawing.Font("標楷體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelX2.Location = new System.Drawing.Point(40, 76);
             this.labelX2.Margin = new System.Windows.Forms.Padding(4);
             this.labelX2.Name = "labelX2";
@@ -109,11 +115,13 @@
             // 
             this.txtAntonym.Border.Class = "TextBoxBorder";
             this.txtAntonym.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtAntonym.Font = new System.Drawing.Font("標楷體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtAntonym.Location = new System.Drawing.Point(102, 121);
             this.txtAntonym.Margin = new System.Windows.Forms.Padding(4);
             this.txtAntonym.Multiline = true;
             this.txtAntonym.Name = "txtAntonym";
             this.txtAntonym.PreventEnterBeep = true;
+            this.txtAntonym.ReadOnly = true;
             this.txtAntonym.Size = new System.Drawing.Size(606, 43);
             this.txtAntonym.TabIndex = 0;
             // 
@@ -123,6 +131,7 @@
             // 
             // 
             this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX3.Font = new System.Drawing.Font("標楷體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelX3.Location = new System.Drawing.Point(40, 127);
             this.labelX3.Margin = new System.Windows.Forms.Padding(4);
             this.labelX3.Name = "labelX3";
@@ -139,11 +148,13 @@
             // 
             this.txtRefwords.Border.Class = "TextBoxBorder";
             this.txtRefwords.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtRefwords.Font = new System.Drawing.Font("標楷體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtRefwords.Location = new System.Drawing.Point(102, 172);
             this.txtRefwords.Margin = new System.Windows.Forms.Padding(4);
             this.txtRefwords.Multiline = true;
             this.txtRefwords.Name = "txtRefwords";
             this.txtRefwords.PreventEnterBeep = true;
+            this.txtRefwords.ReadOnly = true;
             this.txtRefwords.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtRefwords.Size = new System.Drawing.Size(606, 43);
             this.txtRefwords.TabIndex = 0;
@@ -154,6 +165,7 @@
             // 
             // 
             this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX4.Font = new System.Drawing.Font("標楷體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelX4.Location = new System.Drawing.Point(2, 178);
             this.labelX4.Margin = new System.Windows.Forms.Padding(4);
             this.labelX4.Name = "labelX4";
@@ -170,11 +182,14 @@
             // 
             this.txtOtherInfo.Border.Class = "TextBoxBorder";
             this.txtOtherInfo.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtOtherInfo.Font = new System.Drawing.Font("標楷體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtOtherInfo.HideSelection = false;
             this.txtOtherInfo.Location = new System.Drawing.Point(102, 223);
             this.txtOtherInfo.Margin = new System.Windows.Forms.Padding(4);
             this.txtOtherInfo.Multiline = true;
             this.txtOtherInfo.Name = "txtOtherInfo";
             this.txtOtherInfo.PreventEnterBeep = true;
+            this.txtOtherInfo.ReadOnly = true;
             this.txtOtherInfo.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtOtherInfo.Size = new System.Drawing.Size(606, 426);
             this.txtOtherInfo.TabIndex = 0;
@@ -185,6 +200,7 @@
             // 
             // 
             this.labelX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX5.Font = new System.Drawing.Font("標楷體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelX5.Location = new System.Drawing.Point(13, 223);
             this.labelX5.Margin = new System.Windows.Forms.Padding(4);
             this.labelX5.Name = "labelX5";
@@ -211,7 +227,7 @@
             this.Font = new System.Drawing.Font("新細明體", 12F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmInfo";
             this.Text = "Information";
             this.Move += new System.EventHandler(this.frmInfo_Move);

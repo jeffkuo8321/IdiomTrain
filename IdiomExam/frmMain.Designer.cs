@@ -34,6 +34,7 @@
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.gpSetting = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.btnSaveConfig = new DevComponents.DotNetBar.ButtonX();
             this.btnSaveFilePath = new DevComponents.DotNetBar.ButtonX();
             this.txtSaveFilePath = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.txtTransparent = new System.Windows.Forms.TextBox();
@@ -49,12 +50,11 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.SttLableCountDown = new System.Windows.Forms.ToolStripStatusLabel();
             this.superTooltip1 = new DevComponents.DotNetBar.SuperTooltip();
-            this.btnInfo = new DevComponents.DotNetBar.ButtonX();
             this.btnPrev = new DevComponents.DotNetBar.ButtonX();
             this.btnNext = new DevComponents.DotNetBar.ButtonX();
             this.btnExpCol = new DevComponents.DotNetBar.ButtonX();
+            this.btnInfo = new DevComponents.DotNetBar.ButtonX();
             this.picSecIdiom = new System.Windows.Forms.PictureBox();
-            this.btnSaveConfig = new DevComponents.DotNetBar.ButtonX();
             this.picFirstIdiom = new System.Windows.Forms.PictureBox();
             this.gpSetting.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -71,12 +71,14 @@
             this.txtInterpretation.Border.Class = "TextBoxBorder";
             this.txtInterpretation.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.txtInterpretation.DisabledBackColor = System.Drawing.Color.White;
+            this.txtInterpretation.Font = new System.Drawing.Font("標楷體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtInterpretation.ForeColor = System.Drawing.Color.Black;
             this.txtInterpretation.Location = new System.Drawing.Point(63, 110);
             this.txtInterpretation.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.txtInterpretation.Multiline = true;
             this.txtInterpretation.Name = "txtInterpretation";
             this.txtInterpretation.PreventEnterBeep = true;
+            this.txtInterpretation.ReadOnly = true;
             this.txtInterpretation.Size = new System.Drawing.Size(640, 123);
             this.txtInterpretation.TabIndex = 9;
             // 
@@ -86,6 +88,7 @@
             // 
             // 
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX2.Font = new System.Drawing.Font("標楷體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelX2.Location = new System.Drawing.Point(8, 27);
             this.labelX2.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.labelX2.Name = "labelX2";
@@ -99,6 +102,7 @@
             // 
             // 
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.Font = new System.Drawing.Font("標楷體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelX1.Location = new System.Drawing.Point(8, 165);
             this.labelX1.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.labelX1.Name = "labelX1";
@@ -124,6 +128,7 @@
             this.gpSetting.Controls.Add(this.chkEnableTop);
             this.gpSetting.DisabledBackColor = System.Drawing.Color.Empty;
             this.gpSetting.DrawTitleBox = false;
+            this.gpSetting.Font = new System.Drawing.Font("標楷體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gpSetting.Location = new System.Drawing.Point(753, 3);
             this.gpSetting.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.gpSetting.Name = "gpSetting";
@@ -158,6 +163,19 @@
             this.gpSetting.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.gpSetting.TabIndex = 6;
             this.gpSetting.Text = "參數設定";
+            // 
+            // btnSaveConfig
+            // 
+            this.btnSaveConfig.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnSaveConfig.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnSaveConfig.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveConfig.Image")));
+            this.btnSaveConfig.Location = new System.Drawing.Point(4, 113);
+            this.btnSaveConfig.Name = "btnSaveConfig";
+            this.btnSaveConfig.Size = new System.Drawing.Size(32, 32);
+            this.btnSaveConfig.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.superTooltip1.SetSuperTooltip(this.btnSaveConfig, new DevComponents.DotNetBar.SuperTooltipInfo("儲存設定", "", "", null, null, DevComponents.DotNetBar.eTooltipColor.Gray));
+            this.btnSaveConfig.TabIndex = 15;
+            this.btnSaveConfig.Click += new System.EventHandler(this.btnSaveConfig_Click);
             // 
             // btnSaveFilePath
             // 
@@ -339,22 +357,6 @@
             // 
             this.superTooltip1.DefaultTooltipSettings = new DevComponents.DotNetBar.SuperTooltipInfo("", "", "", null, null, DevComponents.DotNetBar.eTooltipColor.Gray);
             // 
-            // btnInfo
-            // 
-            this.btnInfo.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.btnInfo.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnInfo.Image = ((System.Drawing.Image)(resources.GetObject("btnInfo.Image")));
-            this.btnInfo.ImagePosition = DevComponents.DotNetBar.eImagePosition.Top;
-            this.btnInfo.Location = new System.Drawing.Point(712, 89);
-            this.btnInfo.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
-            this.btnInfo.Name = "btnInfo";
-            this.btnInfo.Size = new System.Drawing.Size(32, 107);
-            this.btnInfo.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.btnInfo.TabIndex = 10;
-            this.btnInfo.Text = "其\r\n它\r\n資\r\n訊";
-            this.btnInfo.TextColor = System.Drawing.Color.Black;
-            this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
-            // 
             // btnPrev
             // 
             this.btnPrev.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
@@ -395,6 +397,23 @@
             this.btnExpCol.TabIndex = 11;
             this.btnExpCol.Click += new System.EventHandler(this.btnExpCol_Click);
             // 
+            // btnInfo
+            // 
+            this.btnInfo.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnInfo.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnInfo.Font = new System.Drawing.Font("標楷體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnInfo.Image = ((System.Drawing.Image)(resources.GetObject("btnInfo.Image")));
+            this.btnInfo.ImagePosition = DevComponents.DotNetBar.eImagePosition.Top;
+            this.btnInfo.Location = new System.Drawing.Point(712, 89);
+            this.btnInfo.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.btnInfo.Name = "btnInfo";
+            this.btnInfo.Size = new System.Drawing.Size(32, 107);
+            this.btnInfo.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.btnInfo.TabIndex = 10;
+            this.btnInfo.Text = "其\r\n它\r\n資\r\n訊";
+            this.btnInfo.TextColor = System.Drawing.Color.Black;
+            this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
+            // 
             // picSecIdiom
             // 
             this.picSecIdiom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(244)))), ((int)(((byte)(228)))));
@@ -404,19 +423,6 @@
             this.picSecIdiom.Size = new System.Drawing.Size(640, 50);
             this.picSecIdiom.TabIndex = 2;
             this.picSecIdiom.TabStop = false;
-            // 
-            // btnSaveConfig
-            // 
-            this.btnSaveConfig.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.btnSaveConfig.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnSaveConfig.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveConfig.Image")));
-            this.btnSaveConfig.Location = new System.Drawing.Point(4, 113);
-            this.btnSaveConfig.Name = "btnSaveConfig";
-            this.btnSaveConfig.Size = new System.Drawing.Size(32, 32);
-            this.btnSaveConfig.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.superTooltip1.SetSuperTooltip(this.btnSaveConfig, new DevComponents.DotNetBar.SuperTooltipInfo("儲存設定", "", "", null, null, DevComponents.DotNetBar.eTooltipColor.Gray));
-            this.btnSaveConfig.TabIndex = 15;
-            this.btnSaveConfig.Click += new System.EventHandler(this.btnSaveConfig_Click);
             // 
             // picFirstIdiom
             // 
@@ -428,6 +434,7 @@
             this.picFirstIdiom.Size = new System.Drawing.Size(640, 50);
             this.picFirstIdiom.TabIndex = 0;
             this.picFirstIdiom.TabStop = false;
+            this.picFirstIdiom.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picFirstIdiom_MouseClick);
             // 
             // frmMain
             // 

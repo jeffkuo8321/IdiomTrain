@@ -11,8 +11,9 @@ using System.Net.Http;
 using NPOI.HSSF.UserModel;
 using NPOI.XSSF;
 using System.IO;
-
+using System.Reflection;
 using System.Diagnostics;
+
 
 namespace IdiomExam
 {
@@ -41,7 +42,6 @@ namespace IdiomExam
             identifi,
             refWords
         }
-        
 
         public Point[] mFirstInterPos= new Point[2];
         public Point[] mSecInterPos= new Point[2];
@@ -50,19 +50,21 @@ namespace IdiomExam
 
         #region Properties
         
-
         public ArrayList mCtrlSize;
 
         public DataSet mDs;
         public frmData mCtrlData;
         public frmInfo mCtrlInfo;
 
+        
         public Size mMainExpandSize;
         public Size mMainCollapseSize;
         public bool mExpandStt;
 
+        public bool mAutoChange;
         public bool mAutoSaveImg;
         public string mAutoSaveImgPath;
+
         // --  variable of configuration 
         public enum Config
         {
@@ -82,22 +84,30 @@ namespace IdiomExam
         
         public frmMain()
         {
+            try
+            {
+                InitializeComponent();
+                mMainExpandSize= new Size(1166,298);
+                mMainCollapseSize= new Size(767,298);
             
-            InitializeComponent();
-            mMainExpandSize= new Size(1166,298);
-            mMainCollapseSize= new Size(767,298);
-            
-            mCtrlData= new frmData(this);
-            mCtrlInfo= new frmInfo(this);
-            GetConfig();
+                mCtrlData= new frmData(this);
+                mCtrlInfo= new frmInfo(this);
+                GetConfig();
 
-            mDs= mCtrlData.mDs;
-            ChangeFormSize();
-            GetnextIdiom();
+                mDs= mCtrlData.mDs;
+                ChangeFormSize();
+                GetnextIdiom();
+                
+            }
+            catch (Exception ex)
+            {
+
+                LogWriter.Write(System.Reflection.MethodBase.GetCurrentMethod().Name,ex.StackTrace);
+            }
+            
             
         }
     
-
         #endregion
 
         #region Methods - Other support function
@@ -150,6 +160,8 @@ namespace IdiomExam
                     Convert.ToInt32(
                         arylstConfig[(int)Config.AutoSaveImgFlg].ToString()));
                 
+                mAutoChange=chkAutoChange.Checked;
+                
                 mAutoSaveImg=chkSaveImg.Checked;
 
                 txtCountDown.Text= arylstConfig[(int)Config.AutoChangeTimeValue].ToString();
@@ -168,7 +180,7 @@ namespace IdiomExam
 
                 tmrAutoChange.Enabled=false;
                 tmrAutoChange.Interval=Convert.ToInt32( arylstConfig[(int)Config.AutoChangeTimeValue])*1000;
-                tmrAutoChange.Enabled= chkAutoChange.Enabled;
+                tmrAutoChange.Enabled= mAutoChange;
 
                 
 
@@ -177,7 +189,7 @@ namespace IdiomExam
             {
 
                 iRet=-1;
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
 
             return iRet;
@@ -227,7 +239,7 @@ namespace IdiomExam
             catch (Exception ex)
             {
                 iRet=-1;
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
 
             return iRet;
@@ -243,7 +255,7 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
                 stt=-1;
             }
         
@@ -269,7 +281,7 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         }
         
@@ -291,7 +303,7 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         
         }
@@ -329,7 +341,7 @@ namespace IdiomExam
             catch (Exception ex)
             {
                 iRet=-1;
-                MessageBox.Show(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
             return  iRet;
         }
@@ -357,7 +369,7 @@ namespace IdiomExam
             catch (Exception ex)
             {
 
-                MessageBox.Show(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
             return iRet;
         }
@@ -384,7 +396,7 @@ namespace IdiomExam
             catch (Exception ex)
             {
                 iRet=-1;
-                MessageBox.Show(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
             return  iRet;
         }
@@ -402,7 +414,7 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         }
 
@@ -410,11 +422,15 @@ namespace IdiomExam
         {
             try
             {
+                tmrAutoChange.Enabled=false;
+
                 GetPrevidiom();
+
+                tmrAutoChange.Enabled=mAutoChange;
             }
             catch (Exception ex)
             {
-
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         }
 
@@ -422,11 +438,13 @@ namespace IdiomExam
         {
             try
             {
+                tmrAutoChange.Enabled=false;
                 GetnextIdiom();
+                tmrAutoChange.Enabled= mAutoChange;
             }
             catch (Exception ex)
             {
-
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         }
 
@@ -449,6 +467,40 @@ namespace IdiomExam
             mSecInterPos[1]= new Point(500,92);
         }
 
+        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            try
+            {
+                SaveConfig();
+            }
+            catch (Exception ex)
+            {
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
+            }
+        }
+
+        private void frmMain_Move(object sender, EventArgs e)
+        {
+            try
+            {
+                //if((this.Location.X - mCtrlInfo.Location.X  <=10) && 
+                //    ( mCtrlInfo.Location.Y-(this.Location.Y+this.Height) <=10))
+                //{
+                    mCtrlInfo.SetDesktopLocation(this.Location.X,this.Location.Y+ this.Height-5);
+                //}
+
+                //if(((mCtrlInfo.Location.X + mCtrlInfo.Width)-this.Location.X <=10) && 
+                //    (this.Location.Y-mCtrlInfo.Location.Y<=10))
+                //{
+                //    mCtrlInfo.SetDesktopLocation(this.Location.Y+mCtrlInfo.Width+11,this.Location.Y);
+                //}
+            }
+            catch (Exception ex)
+            {
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
+            }
+        }
+
         #endregion
 
         #region Events - Button
@@ -466,7 +518,7 @@ namespace IdiomExam
             }
             catch (Exception  ex)
             {
-                MessageBox.Show(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
                 
         }
@@ -495,7 +547,7 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         }
         
@@ -511,7 +563,7 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         }
 
@@ -533,7 +585,7 @@ namespace IdiomExam
             catch (Exception ex)
             {
 
-                MessageBox.Show(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         }
 
@@ -548,7 +600,6 @@ namespace IdiomExam
         
         private void txtCountDown_TextChanged(object sender, EventArgs e)
         {
-            int iRet=0;
             try
             {
                 int iTime=0;
@@ -558,12 +609,12 @@ namespace IdiomExam
                 }
                 catch (Exception ex)
                 {
+                    LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
                     return;
                 }
                 
                 if(iTime>= sldAutoChange.Minimum)
                 {
-                
                     sldAutoChange.Value=iTime;
                     tmrAutoChange.Enabled=false;
                     tmrAutoChange.Interval= iTime*1000;
@@ -572,9 +623,9 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
+
         }
 
         private void txtCountDown_Validated(object sender, EventArgs e)
@@ -607,11 +658,12 @@ namespace IdiomExam
             try
             {
                 tmrAutoChange.Enabled= chkAutoChange.Checked;
+                mAutoChange=tmrAutoChange.Enabled;
                 
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         }
 
@@ -619,6 +671,7 @@ namespace IdiomExam
         {
             this.TopMost= chkEnableTop.Checked;
         }
+        
         private void chkSaveImg_CheckedChanged(object sender, EventArgs e)
         {
             try
@@ -627,7 +680,7 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         }
 
@@ -647,7 +700,7 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         }
 
@@ -667,7 +720,7 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         }
 
@@ -679,10 +732,9 @@ namespace IdiomExam
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                LogWriter.Write(MethodBase.GetCurrentMethod().Name, ex.StackTrace);
             }
         }
-
 
 
         #endregion
@@ -692,7 +744,6 @@ namespace IdiomExam
         #endregion
 
         #region Events - GroupBox
-
 
 
         #endregion
@@ -709,40 +760,22 @@ namespace IdiomExam
 
         #endregion
 
-
-        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Int32 iRet=0;
-            try
-            {
-                SaveConfig();
-            }
-            catch (Exception ex)
-            {
-                iRet=-1;
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void frmMain_Move(object sender, EventArgs e)
+        private void picFirstIdiom_MouseClick(object sender, MouseEventArgs e)
         {
             try
             {
-                //if((this.Location.X - mCtrlInfo.Location.X  <=10) && 
-                //    ( mCtrlInfo.Location.Y-(this.Location.Y+this.Height) <=10))
-                //{
-                    mCtrlInfo.SetDesktopLocation(this.Location.X,this.Location.Y+ this.Height-5);
-                //}
-
-                //if(((mCtrlInfo.Location.X + mCtrlInfo.Width)-this.Location.X <=10) && 
-                //    (this.Location.Y-mCtrlInfo.Location.Y<=10))
-                //{
-                //    mCtrlInfo.SetDesktopLocation(this.Location.Y+mCtrlInfo.Width+11,this.Location.Y);
-                //}
+                tmrAutoChange.Enabled=!tmrAutoChange.Enabled;
+                if(tmrAutoChange.Enabled)
+                {
+                    
+                }else
+                {
+                    
+                }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                LogWriter.Write(System.Reflection.MethodBase.GetCurrentMethod().Name,ex.StackTrace);
             }
         }
     }
