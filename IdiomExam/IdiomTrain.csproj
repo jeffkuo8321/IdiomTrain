@@ -146,6 +146,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="Docs\idioms_2011_20190329.xls" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -176,6 +177,24 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Docs\ben1.png" />
+    <Content Include="Docs\f00688_2.png" />
+    <Content Include="Docs\f00945_2.png" />
+    <Content Include="Docs\iconfinder_go-next_118773.png" />
+    <Content Include="Docs\iconfinder_go-previous_118774 %281%29.png" />
+    <Content Include="Docs\iconfinder_go-previous_118774.png" />
+    <Content Include="Docs\iconfinder_Next_27860.png" />
+    <Content Include="Docs\iconfinder_Previous_27869.png" />
+    <Content Include="Docs\info_24px_1228995_easyicon.net.png" />
+    <Content Include="Docs\next_15.184241019699px_1153774_easyicon.net.png" />
+    <Content Include="Docs\p0271_m.png" />
+    <Content Include="Docs\pngsucai_362112_30Per.png" />
+    <Content Include="Docs\pngsucai_362112_cdabb6.png" />
+    <Content Include="Docs\save-icon %281%29.png" />
+    <Content Include="Docs\Save-icon.png" />
+    <Content Include="Docs\Save-icon_16.png" />
+    <Content Include="Docs\tool_config_15.840399002494px_1176300_easyicon.net.png" />
+    <Content Include="Docs\tool_config_16px_1176300_easyicon.net.ico" />
     <Content Include="icon_5p_48_180_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
