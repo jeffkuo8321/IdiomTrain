@@ -23,7 +23,7 @@ namespace IdiomTrainer
         #region Definitions
         public const string Fn_IDIOM="idioms_2011_20190329.xls";
 
-        
+        // 暫時保留之前參考黑暗執行緒大大直接使用注音字型的code.目前實際只使用到標楷體一種字型.
         static string[] PhonFonts = new string[] 
         {
           "標楷體","王漢宗中楷體注音", "王漢宗中楷體破音一",
