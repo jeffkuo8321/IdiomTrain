@@ -197,5 +197,8 @@
     <Content Include="Docs\tool_config_16px_1176300_easyicon.net.ico" />
     <Content Include="icon_5p_48_180_icon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="安裝檔\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
