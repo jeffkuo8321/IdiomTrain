@@ -1,4 +1,4 @@
-﻿namespace IdiomExam
+﻿namespace IdiomTrainer
 {
     partial class frmInfo
     {

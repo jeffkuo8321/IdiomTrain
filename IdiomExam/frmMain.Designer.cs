@@ -1,4 +1,4 @@
-﻿namespace IdiomExam
+﻿namespace IdiomTrainer
 {
     partial class frmMain
     {
@@ -366,7 +366,7 @@
             this.btnPrev.Name = "btnPrev";
             this.btnPrev.Size = new System.Drawing.Size(36, 36);
             this.btnPrev.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.superTooltip1.SetSuperTooltip(this.btnPrev, new DevComponents.DotNetBar.SuperTooltipInfo("上一筆資料", "", "", global::IdiomExam.Properties.Resources.ben1_96pix, null, DevComponents.DotNetBar.eTooltipColor.Apple));
+            this.superTooltip1.SetSuperTooltip(this.btnPrev, new DevComponents.DotNetBar.SuperTooltipInfo("上一筆資料", "", "", global::IdiomTrainer.Properties.Resources.ben1_96pix, null, DevComponents.DotNetBar.eTooltipColor.Apple));
             this.btnPrev.TabIndex = 15;
             this.btnPrev.Click += new System.EventHandler(this.btnPrev_Click);
             // 
@@ -379,7 +379,7 @@
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(36, 36);
             this.btnNext.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.superTooltip1.SetSuperTooltip(this.btnNext, new DevComponents.DotNetBar.SuperTooltipInfo("下一筆資料", "", "", global::IdiomExam.Properties.Resources.ben1_96pix, null, DevComponents.DotNetBar.eTooltipColor.Apple, true, false, new System.Drawing.Size(0, 0)));
+            this.superTooltip1.SetSuperTooltip(this.btnNext, new DevComponents.DotNetBar.SuperTooltipInfo("下一筆資料", "", "", global::IdiomTrainer.Properties.Resources.ben1_96pix, null, DevComponents.DotNetBar.eTooltipColor.Apple, true, false, new System.Drawing.Size(0, 0)));
             this.btnNext.TabIndex = 14;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 

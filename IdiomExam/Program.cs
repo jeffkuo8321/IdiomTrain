@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Reflection;
 using System.Text;
-namespace IdiomExam
+namespace IdiomTrainer
 {
     public class LogWriter
     {

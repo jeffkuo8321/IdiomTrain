@@ -15,7 +15,7 @@ using System.Reflection;
 using System.Diagnostics;
 
 
-namespace IdiomExam
+namespace IdiomTrainer
 {
 
     public partial class frmMain:Form

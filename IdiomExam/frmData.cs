@@ -14,7 +14,7 @@ using NPOI.XSSF;
 using System.Collections;
 using System.Drawing.Text;
 using System.Reflection;
-namespace IdiomExam
+namespace IdiomTrainer
 {
     public partial class frmData : Form
     {
