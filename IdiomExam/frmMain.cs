@@ -670,6 +670,9 @@ namespace IdiomTrainer
         private void chkEnableTop_CheckedChanged(object sender, EventArgs e)
         {
             this.TopMost= chkEnableTop.Checked;
+            this.TopMost=chkEnableTop.Checked;
+            mCtrlData.TopMost= chkEnableTop.Checked;
+            mCtrlInfo.TopMost= chkEnableTop.Checked;
         }
         
         private void chkSaveImg_CheckedChanged(object sender, EventArgs e)
@@ -716,6 +719,8 @@ namespace IdiomTrainer
                 txtTransparent.Text= sldTransparent.Value.ToString();
                
                 this.Opacity= Convert.ToDouble(sldTransparent.Value)/100;
+                mCtrlInfo.Opacity= Convert.ToDouble(sldTransparent.Value)/100;
+                mCtrlData.Opacity=Convert.ToDouble(sldTransparent.Value)/100;
                 
             }
             catch (Exception ex)
